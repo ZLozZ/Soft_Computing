@@ -64,7 +64,15 @@ def hybrid(qt, b, n):
     return np.array(qt_hybrid)
 
 
-def mutation(qt, )
+def mutation(qt, b, n):
+    if random.randint(0, 100) <= 5: #xác suất đột biến khoảng 5% cả quần thể
+        index= random.randint(0, (n-1))
+        point = random.randint(0, (b-1))
+        if qt[index][point] == 1:
+            qt[index][point] = 0
+        else: # qt_mutation[index][point] == 0:
+            qt[index][point] = 1
+    return np.array(qt)
 
 b = int(input("Bạn muốn mã hóa thành mấy bit: "))
 n = int(input("Mời bạn chọn số quần thể: "))
@@ -95,5 +103,9 @@ print(qt_new)
 qt_hybrid = hybrid(qt_new, b, n)
 print("Quần thể sau khi lai: ")
 print(qt_hybrid)
+qt_mutation = mutation(qt_hybrid, b, n)
+print("Sau khi đột biến: ")
+print(qt_mutation)
+qt = qt_mutation
 
 
