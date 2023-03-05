@@ -7,7 +7,6 @@ def f(x):
 def Giaima(x, b):
     Tp = 0
     for i in range(0, b):
-        c = x[i]
         Tp += x[i]*(2**i)
     return Tp
 
@@ -54,8 +53,8 @@ def hybrid(qt, b, n):
             qt_hybrid2= np.append(gen2[:point], gen1[point:])
             qt_hybrid.append(qt_hybrid1)
             qt_hybrid.append(qt_hybrid2)
-            # print(index_1)
-            # print(index_2)
+            print(index_1)
+            print(index_2)
     else:
         for i in range(0, int((n+1)/2)):
             gen1.append(qt[random.randint(0, (n-1))])
@@ -65,7 +64,7 @@ def hybrid(qt, b, n):
 
 
 def mutation(qt, b, n):
-    if random.randint(0, 100) <= 5: #xác suất đột biến khoảng 5% cả quần thể
+    if random.randint(0, 100) <= 100: #xác suất đột biến khoảng 5% cả quần thể
         index= random.randint(0, (n-1))
         point = random.randint(0, (b-1))
         if qt[index][point] == 1:
@@ -81,32 +80,52 @@ print("Quần thể sau khi tạo ngẫu nhiên: ")
 print(qt)
 print("Giải mã:")
 pt_Giaima = []
-for i in range(0, 4):
-    pt_Giaima.append(Giaima(qt[i], b))
-    print("{} -----> {}\t\n".format(qt[i], Giaima(qt[i], b)))
-print("Tính fitness: ")
-fitness = []
-total = 0
-for i in range(0, 4):
-    print("{} -----> {}\t\n".format(pt_Giaima[i], f(pt_Giaima[i])))
-    total += f(pt_Giaima[i])
-    fitness.append(pt_Giaima[i])
-print("Total fitness: ", total)
-Q = Probability(fitness)
-print("Xác suất: ")
-for i in range(0, len(Q)):
-    print("{} ------> {}".format(fitness[i], Q[i]))
-print("Total xác suất: ", sum(Q))
-qt_new = select_individual(qt, Q, n)
-print("Quần thể chọn để lai: ")
-print(qt_new)
-qt_hybrid = hybrid(qt_new, b, n)
-print("Quần thể sau khi lai: ")
-print(qt_hybrid)
-qt_mutation = mutation(qt_hybrid, b, n)
-print("Sau khi đột biến: ")
-print(qt_mutation)
-qt = qt_mutation
-print("Xong")
+l = 0
+first_fitness = 0
+loop_fitness = 0
+while True:
+    print("===========================================LẶP LẦN THỨ {}====================================================".format(l))
+    for i in range(0, n):
+        pt_Giaima.append(Giaima(qt[i], b))
+        print("{} -----> {}\t\n".format(qt[i], Giaima(qt[i], b)))
+    print("Tính fitness: ")
+    fitness = []
+    total = 0
+    for i in range(0, n):
+        print("{} -----> {}\t\n".format(pt_Giaima[i], f(pt_Giaima[i])))
+        total += f(pt_Giaima[i])
+        fitness.append(pt_Giaima[i])
+    if first_fitness != total:
+        first_fitness = total
+    else:
+        loop_fitness += 1
+    if loop_fitness == 10:
+        break
+    print("Total fitness: ", total)
+    Q = Probability(fitness)
+    print("Xác suất: ")
+    for i in range(0, len(Q)):
+        print("{} ------> {}".format(fitness[i], Q[i]))
+    print("Total xác suất: ", sum(Q))
+    qt_new = select_individual(qt, Q, n)
+    print("Quần thể chọn để lai: ")
+    print(qt_new)
+    qt_hybrid = hybrid(qt_new, b, n)
+    print("Quần thể sau khi lai: ")
+    print(qt_hybrid)
+    qt_mutation = mutation(qt_hybrid, b, n)
+    print("Sau khi đột biến: ")
+    print(qt_mutation)
+    qt = qt_mutation
+    
+    #cá thể max lúc đầu
+    individual_max = np.random.randint(1, 2, size=(1, b))
+    for i in range(0, 1):
+        individual_max = Giaima(individual_max[i], b)
+    individual_max = f(individual_max)
+    for i in range(0, n):
+        if fitness[0] == individual_max:
+            break
+    l+=1
 
 
