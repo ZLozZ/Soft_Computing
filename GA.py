@@ -107,5 +107,6 @@ qt_mutation = mutation(qt_hybrid, b, n)
 print("Sau khi đột biến: ")
 print(qt_mutation)
 qt = qt_mutation
+print("Xong")
 
 
