@@ -37,29 +37,40 @@ def select_individual(qt, q, n):
     return np.array(qt_new)
 
 def hybrid(qt, b, n):
-    point = random.randint(0, (b-1))
+    
     gen1 = 0
     gen2 = 0
     qt_hybrid = []
+    index_1_before = b
+    index_2_before = b
     if n%2 == 0:
         for i in range(0, int(n/2)):
+            point = random.randint(0, (b-1))
             index_1 = random.randint(0, (n-1))
+            while 1:
+                if (index_1 != index_1_before) and (index_1!=index_2_before):
+                    break
+                index_1 = random.randint(0, (n-1))
             gen1=qt[index_1]
             index_2 = random.randint(0, (n-1))
-            while index_1 == index_2:
+            while 1:
+                if (index_2 != index_1_before) and (index_2!=index_2_before) and (index_1 != index_2):
+                    break
                 index_2 = random.randint(0, (n-1))
             gen2=qt[index_2]
             qt_hybrid1= np.append(gen1[:point], gen2[point:])
             qt_hybrid2= np.append(gen2[:point], gen1[point:])
             qt_hybrid.append(qt_hybrid1)
             qt_hybrid.append(qt_hybrid2)
+            index_1_before = index_1
+            index_2_before = index_2
             print(index_1)
             print(index_2)
-    else:
-        for i in range(0, int((n+1)/2)):
-            gen1.append(qt[random.randint(0, (n-1))])
-            gen2.append(qt[random.randint(0, (n-1))])
-            qt_hybrid.append(gen1[:point] + gen2[point+1:])
+    # else:
+    #     for i in range(0, int((n+1)/2)):
+    #         gen1.append(qt[random.randint(0, (n-1))])
+    #         gen2.append(qt[random.randint(0, (n-1))])
+    #         qt_hybrid.append(gen1[:point] + gen2[point+1:])
     return np.array(qt_hybrid)
 
 
